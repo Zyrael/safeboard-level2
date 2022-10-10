@@ -1,0 +1,23 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 400px;
+}
+
+.main > * + * {
+  margin-top: 50px;
+}
+
+.main > a {
+  font-size: 2em;
+  text-decoration: none;
+  color: black;
+  background: #ccc;
+  padding: .5em 1em;
+  transition: background .2s;
+}
+
+.main > a:hover {
+  background: #ddd;
+}
