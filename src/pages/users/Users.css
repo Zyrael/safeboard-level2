@@ -1,13 +1,7 @@
 .users-container {
-  display: flex;
-  flex-direction: column;
-  width: 1200px;
+  width: 80%;
+  margin: 0 auto;
 }
-
-.data-container {
-  padding: 0 1rem;
-}
-
 .user-search {
   width: 400px;
   height: 40px;
@@ -15,7 +9,8 @@
 }
 
 .header {
-  padding: 1rem;
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .header > * + * {
@@ -31,4 +26,44 @@
   height: 40px;
   width: 200px;
   margin-left: 1rem;
+}
+
+.data-container {
+  width: 100%;
+}
+
+.loading-container {
+  width: 100%;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  width: 50px;
+  height: 50px;
+  animation: loading-animation .4s infinite;
+}
+
+@keyframes loading-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  25% {
+    transform: rotateZ(90deg);
+  }
+
+  50% {
+    transform: rotateZ(180deg);
+  }
+
+  75% {
+    transform: rotateZ(270deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
 }

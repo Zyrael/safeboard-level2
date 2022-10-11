@@ -4,6 +4,7 @@ import {
   Routes,
 } from 'react-router-dom';
 import { Main, Users } from '../pages';
+import './App.css';
 
 export function App() {
   return (

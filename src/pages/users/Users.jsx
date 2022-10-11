@@ -3,8 +3,9 @@ import axios from 'axios';
 import './Users.css';
 import debounce from 'lodash.debounce';
 import { Cards, Table } from '../../components';
+import { ReactComponent as LoadingSVG } from './images/loading.svg';
 
-const URL = 'https://fakerapi.it/api/v1/persons?_seed=123456&_quantity=300';
+const URL = 'https://fakerapi.it/api/v1/persons?_seed=123456&_quantity=1000';
 
 const groupMapping = {
   0: 'CDN/Managers',
@@ -49,7 +50,7 @@ export function Users() {
   if (searchField) {
     displayUsers = users.filter((user) => user.name.toLowerCase().includes(searchField));
   }
-  const debouncedResults = useMemo(() => debounce(handleSearch, 300), []);
+  const debouncedResults = useMemo(() => debounce(handleSearch, 500), []);
   useEffect(() => () => debouncedResults.cancel());
 
   const handleSelect = (e) => setView(e.target.value);
@@ -69,7 +70,7 @@ export function Users() {
         </label>
       </div>
       <div className="data-container">
-        {(users) ? displayView : <div>loading</div>}
+        {(users) ? displayView : <div className="loading-container"><LoadingSVG className="loading" /></div>}
       </div>
     </div>
   );
