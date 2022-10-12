@@ -1,27 +1,34 @@
 .users-container {
-  width: 80%;
+  max-width: calc(1500px + 7rem);
   margin: 0 auto;
-}
-.user-search {
-  width: 400px;
-  height: 40px;
-  font-size: 1.5rem;
 }
 
 .header {
   width: 100%;
   margin: 1rem 0;
+  padding: 0 1rem;
+  display: flex;
 }
 
 .header > * + * {
   margin-left: 1rem;
 }
 
-.view-label {
+.user-search {
+  width: 700px;
+  height: 40px;
   font-size: 1.5rem;
 }
 
-.view-selector {
+.view-label {
+  margin-left: auto;
+}
+
+.selector-label {
+  font-size: 1.5rem;
+}
+
+.selector {
   font-size: 1.5rem;
   height: 40px;
   width: 200px;
@@ -29,7 +36,7 @@
 }
 
 .data-container {
-  width: 100%;
+  padding: 0 1rem;
 }
 
 .loading-container {
