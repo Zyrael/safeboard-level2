@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { sortBy } from 'lodash';
+import { orderBy } from 'lodash';
 import './Users.css';
 import debounce from 'lodash.debounce';
-import { Cards, Table } from '../../components';
+import { Cards, Table, Groups } from '../../components';
+import { GroupsContext } from '../../providers';
 import { ReactComponent as LoadingSVG } from './images/loading.svg';
 
-const URL = 'https://fakerapi.it/api/v1/persons?_seed=123456&_quantity=1000';
+const URL = 'https://fakerapi.it/api/v1/persons?_quantity=1000';
 
 const groupMapping = {
   0: 'CDN/Managers',
@@ -17,13 +18,16 @@ const groupMapping = {
 
 const getSortedUsers = {
   default: (users) => users,
-  name: (users) => sortBy(users, (user) => user.name),
+  name: (users, order) => orderBy(users, ['name'], [order]),
 };
 
 const getUsersView = {
   cards: (displayUsers) => <Cards users={displayUsers} />,
   table: (displayUsers) => <Table users={displayUsers} />,
+  groups: (displayUsers) => <Groups users={displayUsers} />,
 };
+
+const groupsArray = ['CDN/Managers', 'CDN/Finantials', 'CDN/Human Resources', 'Unmanaged'];
 
 const mapUsers = ({
   id, firstname, lastname, email, phone,
@@ -40,6 +44,7 @@ export function Users() {
   const [searchField, setSearchField] = useState('');
   const [view, setView] = useState('cards');
   const [sorter, setSorter] = useState('default');
+  const [order, setOrder] = useState('asc');
   let displayUsers = users;
 
   useEffect(() => {
@@ -62,9 +67,12 @@ export function Users() {
 
   const handleView = (e) => setView(e.target.value);
   const handlesorter = (e) => setSorter(e.target.value);
+  const handleOrder = () => setOrder((order === 'asc') ? 'desc' : 'asc');
 
-  const sortedUsers = getSortedUsers[sorter](displayUsers);
+  const sortedUsers = getSortedUsers[sorter](displayUsers, order);
   const displayView = getUsersView[view](sortedUsers);
+
+  const arrowClasses = (order === 'asc') ? 'arrow' : 'arrow down';
 
   return (
     <div className="users-container">
@@ -75,6 +83,7 @@ export function Users() {
           <select name="view" id="view-selector" className="selector" onChange={handleView} value={view}>
             <option value="cards">Cards</option>
             <option value="table">Table</option>
+            <option value="groups">Groups</option>
           </select>
         </label>
         <label htmlFor="sort-selector" className="selector-label">
@@ -84,10 +93,13 @@ export function Users() {
             <option value="name">Name</option>
           </select>
         </label>
+        <button type="button" className="order-button" onClick={handleOrder}><span className={arrowClasses}>&uarr;</span></button>
       </div>
-      <div className="data-container">
-        {(users) ? displayView : <div className="loading-container"><LoadingSVG className="loading" /></div>}
-      </div>
+      <GroupsContext.Provider value={groupsArray}>
+        <div className="data-container">
+          {(users) ? displayView : <div className="loading-container"><LoadingSVG className="loading" /></div>}
+        </div>
+      </GroupsContext.Provider>
     </div>
   );
 }
