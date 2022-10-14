@@ -9,16 +9,10 @@ import { ReactComponent as LoadingSVG } from './images/loading.svg';
 
 const URL = 'https://fakerapi.it/api/v1/persons?_quantity=1000';
 
-const groupMapping = {
-  0: 'CDN/Managers',
-  1: 'CDN/Finantials',
-  2: 'CDN/Human Resources',
-  3: 'Unmanaged',
-};
-
 const getSortedUsers = {
   default: (users) => users,
   name: (users, order) => orderBy(users, ['name'], [order]),
+  email: (users, order) => orderBy(users, ['email'], [order]),
 };
 
 const getUsersView = {
@@ -27,13 +21,13 @@ const getUsersView = {
   groups: (displayUsers) => <Groups users={displayUsers} />,
 };
 
-const groupsArray = ['CDN/Managers', 'CDN/Finantials', 'CDN/Human Resources', 'Unmanaged'];
+const groupsArray = ['CDN/Managers', 'CDN/Finantials', 'CDN/Human Resources', 'Software Developer', 'Product Manager', 'Unmanaged'];
 
 const mapUsers = ({
   id, firstname, lastname, email, phone,
 }) => {
   const name = firstname.concat(` ${lastname}`);
-  const group = groupMapping[Math.floor(Math.random() * 4)];
+  const group = groupsArray[Math.floor(Math.random() * 6)];
   return {
     id, name, email, group, phone,
   };
@@ -60,7 +54,10 @@ export function Users() {
 
   const handleSearch = (e) => setSearchField(e.target.value.toLowerCase());
   if (searchField) {
-    displayUsers = users.filter((user) => user.name.toLowerCase().includes(searchField));
+    displayUsers = users.filter((user) => (
+      user.name.toLowerCase().includes(searchField)
+   || user.email.toLowerCase().includes(searchField)
+   || user.phone.toLowerCase().includes(searchField)));
   }
   const debouncedResults = useMemo(() => debounce(handleSearch, 500), []);
   useEffect(() => () => debouncedResults.cancel());
@@ -72,28 +69,38 @@ export function Users() {
   const sortedUsers = getSortedUsers[sorter](displayUsers, order);
   const displayView = getUsersView[view](sortedUsers);
 
-  const arrowClasses = (order === 'asc') ? 'arrow' : 'arrow down';
+  const arrowButtonClasses = (order === 'asc') ? 'order-button' : 'order-button down';
 
   return (
     <div className="users-container">
       <div className="header">
         <input type="text" placeholder="Search" className="user-search" onChange={debouncedResults} />
-        <label htmlFor="view-selector" className="selector-label view-label">
-          Select View:
-          <select name="view" id="view-selector" className="selector" onChange={handleView} value={view}>
-            <option value="cards">Cards</option>
-            <option value="table">Table</option>
-            <option value="groups">Groups</option>
-          </select>
-        </label>
-        <label htmlFor="sort-selector" className="selector-label">
+        <fieldset className="view-choose" onChange={handleView}>
+          <legend>Select View:</legend>
+          <div className="view-radios-container">
+            <label htmlFor="cards" className="view-label">
+              <input type="radio" name="view" id="cards" value="cards" checked={view === 'cards'} />
+              <span>Cards</span>
+            </label>
+            <label htmlFor="table" className="view-label">
+              <input type="radio" name="view" id="table" value="table" checked={view === 'table'} />
+              <span>Table</span>
+            </label>
+            <label htmlFor="groups" className="view-label">
+              <input type="radio" name="view" id="groups" value="groups" checked={view === 'groups'} />
+              <span>Groups</span>
+            </label>
+          </div>
+        </fieldset>
+        <label htmlFor="sort" className="selector-label">
           Sort by:
           <select name="sort" id="sort-selector" className="selector" onChange={handlesorter} value={sorter}>
-            <option value="default">Select</option>
+            <option value="default">None</option>
             <option value="name">Name</option>
+            <option value="email">Email</option>
           </select>
         </label>
-        <button type="button" className="order-button" onClick={handleOrder}><span className={arrowClasses}>&uarr;</span></button>
+        <button type="button" className={arrowButtonClasses} onClick={handleOrder}><span className="arrow">&uarr;</span></button>
       </div>
       <GroupsContext.Provider value={groupsArray}>
         <div className="data-container">

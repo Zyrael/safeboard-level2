@@ -1,13 +1,14 @@
 .users-container {
   max-width: calc(1500px + 7rem);
+  width: 100%;
   margin: 0 auto;
 }
 
 .header {
-  width: 100%;
   margin: 1rem 0;
   padding: 0 1rem;
   display: flex;
+  align-items: flex-end;
 }
 
 .header > * + * {
@@ -17,7 +18,14 @@
 .user-search {
   width: 700px;
   height: 40px;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  padding-left: .5rem;
+}
+
+.user-search:focus {
+  outline: 1px solid #6969dd;
 }
 
 .view-label {
@@ -25,27 +33,69 @@
 }
 
 .selector-label {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .selector {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   height: 40px;
   width: 200px;
   margin-left: 1rem;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  background: transparent;
+  cursor: pointer;
+}
+
+.selector:hover {
+  background: #eee;
 }
 
 .order-button {
   width: 40px;
   height: 40px;
+  padding-bottom: .3rem;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  background: transparent;
+  cursor: pointer;
+}
+
+.order-button:hover {
+  background: #eee;
+}
+
+.order-button.down {
+  transform: rotate(180deg);
 }
 
 .arrow {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
-.arrow.down {
-  transform: rotate(90deg);
+.view-choose {
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  font-size: 1.2rem;
+  padding: 0 .5rem .5rem;
+  margin-left: auto;
+}
+
+.view-radios-container > * + * {
+  margin-left: .5rem;
+}
+
+.view-label > * {
+  cursor: pointer;
+}
+
+.view-label > input:active {
+  background-color: #6969dd;
+}
+
+.view-label > span {
+  margin-left: .3rem;
 }
 
 .data-container {

@@ -4,7 +4,7 @@ import { ReactComponent as UserSVG } from './images/user.svg';
 
 export function UserCard({ user }) {
   const {
-    name, group, phone,
+    name, group, email, phone,
   } = user;
 
   return (
@@ -12,6 +12,7 @@ export function UserCard({ user }) {
       <h2 className="name">{name}</h2>
       <UserSVG className="user-picture" />
       <p className="group">{group}</p>
+      <p className="email">{email}</p>
       <p className="phone">{phone}</p>
     </li>
   );
